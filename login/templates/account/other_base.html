@@ -1,0 +1,105 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block head_title %}{% endblock head_title %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+    /* Custom styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    header {
+            background: linear-gradient(to right, #0073e6, #ffa500);
+            color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    footer {
+        background-color: #f8f9fa;
+        color: #555;
+        padding: 20px 0;
+        text-align: center;
+        margin-top: auto;
+        width: 100%;
+    }
+    .btn-login, .btn-google {
+        background-color: #0073e6;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        margin-right: 10px;
+        font-size: 18px;
+        min-width: 200px;
+    } .btn-signup {
+        background-color: #ffa500;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        margin-right: 10px;
+        font-size: 18px;
+        min-width: 200px;
+    }
+    .btn-report {
+        background-color: #BA55D3;
+        color: #fff;
+        border: none;
+        padding: 15px 20px; /* Adjusted padding for larger buttons */
+        margin-left: 10px;
+        font-size: 18px; /* Increased font size */
+        min-width: 200px;
+    }
+</style>
+
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body>
+    <header class="container-fluid"> <!-- Added class container-fluid -->
+        <div class="container">
+            <h1>MedWatch</h1>
+            <p>Ensuring transparency and integrity in healthcare</p>
+        </div>
+    </header>
+
+    <div class="container">
+        {% block body %}
+           <!-- {% if user.is_authenticated %}
+                <div class="text-left mb-3">
+                    <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Change Email" %}</a>
+                    <a href="{% url 'account_logout' %}" class="btn btn-danger">{% trans "Sign Out" %}</a>
+                </div>
+            {% else %} -->
+           <!--     <div class="text-left mb-3">
+                    <a href="{% url 'account_login' %}" class="btn btn-login">{% trans "Sign In With Your Username and Password!" %}</a>
+                    <a href="{% url 'account_signup' %}" class="btn btn-signup">{% trans "New User? Sign Up!" %}</a>
+                </div> -->
+            {% endif %}
+            {% block content %}{% endblock content %}
+        {% endblock body %}
+    </div>
+
+    {% block extra_body %}{% endblock extra_body %}
+
+    <footer class="container">
+        <div>
+            <p>This system is a class project, not monitored, and no real information should be submitted. For more information, visit <a href="https://s24.cs3240.org/project.html">our website</a>.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

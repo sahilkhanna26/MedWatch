@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static socialaccount %}
+{% block title %}User Dashboard{% endblock %}
+{% block content %}
+
+<section class="container">
+{% if user.first_name %}<h2>Welcome {{ user.first_name }}!</h2> {% else %}<h2>Welcome!</h2> {% endif %}
+{% if user.email %} <p>Your account: {{ user.email }}</p>{% endif %}
+
+<p>My Reports:</p>
+<table class="table">
+    <thead>
+    <tr>
+    <th>Status</th>
+    <th>Name Reported</th>
+    <th>Date</th>
+    <th>Action</th>
+    </tr>
+    </thead>
+<tbody>
+    {% for report in user_reports %}
+    <td>
+        <span class="status-circle" style="background-color:
+        {% if report.status == 'Resolved' %} green
+        {% elif report.status == 'In Progress' %} yellow
+        {% else %} red
+        {% endif %};"></span>
+        {{ report.status }}
+    </td>
+    <td>{{ report.name_reported }}</td>
+    <td>{{ report.published_date|date:"F j, Y, g:i a" }}</td>
+    <td><a href="{% url 'login:report_detail' report.id %}">View Details</a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<br>
+    <form action="{% url 'login:logout' %}" method="post">
+        {% csrf_token %}
+        <a href="{% url 'login:report' %}" class="btn btn-report">New report</a>
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</section>
+{% endblock %}

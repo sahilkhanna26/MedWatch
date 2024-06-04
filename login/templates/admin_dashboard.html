@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    <h2>Welcome Site Admin!</h2> <br>
+  <p> Please review reports and if deemed medical malpractice, forward them to the appropriate authorities such as:</p>
+  <ol>
+    <li>bhp@dhp.virginia.gov</li>
+    <li>Elliott.crigger@ama‐assn.org</li>
+    <li>help@npdb.hrsa.gov</li>
+  </ol>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Reporter</th>
+        <th>Name Reported</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for report in all_reports %}
+      <tr>
+        <td>
+          <span class="status-circle" style="background-color:
+          {% if report.status == 'Resolved' %} green
+          {% elif report.status == 'In Progress' %} yellow
+          {% else %} red
+          {% endif %};"></span>
+          {{ report.status }}
+        </td>
+        <td>{% if report.reporter.username %}
+            {{ report.reporter.username }}
+          {% elif report.reporter.email %}
+            {{ report.reporter.email }}
+          {% else %}
+            Anonymous
+          {% endif %}</td>
+        <td>{{ report.name_reported }}</td>
+        <td>{{ report.published_date|date:"F j, Y, g:i a" }}</td>
+        <td><a href="{% url 'login:report_detail' report.id %}">View Details</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form method="post" action="{% url 'login:logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Logout</button>
+  </form>
+{% endblock %}

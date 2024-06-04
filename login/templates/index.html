@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static socialaccount %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+<section class="container">
+    <h2>Our Mission</h2>
+    <p>To empower healthcare professionals to report misconduct, safety breaches, and unethical practices without fear of retaliation.</p>
+</section>
+
+<section class="container">
+    <h2>Whistleblower Rights</h2>
+    <ul>
+        <li>Right to anonymity</li>
+        <li>Right to protection from retaliation</li>
+        <li>Right to have your report thoroughly investigated</li>
+    </ul>
+</section>
+
+<section class="container">
+<h2>Further Questions</h2>
+<p>If you have further questions on what constitutes wrongful behavior, your responsibility to report misconduct, or UVA's whistleblowing policies, refer to the following resources.</p>
+<ul>
+    <li><a href="https://www.healthsystem.virginia.edu/codeofconduct/">UVA Health Compliance Code of Conduct</a></li>
+    <li><a href="https://uvapolicy.virginia.edu/policy/RES-004">UVA Policy on Research Misconduct</a></li>
+</ul>
+</section>
+
+<section class="container">
+    <h2>How to Report</h2>
+    <p>If you have witnessed or are aware of misconduct within your healthcare facility, take a stand and submit your report. Your identity can remain confidential.</p>
+    <!-- Only show the following links if the user is not authenticated -->
+    {% if not user.is_authenticated %}
+        <div class="text-center">
+            <a href="{% provider_login_url 'google' %}" class="btn btn-login">Login</a>
+            <a href="{% url 'login:report' %}" class="btn btn-report">Submit a report anonymously</a>
+        </div>
+    {% endif %}
+</section>
+
+<!-- Only show the following section if the user is authenticated -->
+{% if user.is_authenticated %}
+    <section class="container">
+        <p>Welcome back, {{ user.username }}.</p>
+        <form action="{% url 'login:logout' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Logout" class="btn btn-danger">
+        </form>
+    </section>
+{% endif %}
+
+{% endblock %}

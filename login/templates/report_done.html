@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block title %}Report Done{% endblock %}
+{% block content %}
+<style>
+    .response-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .response-container h3 {
+        margin-top: 0;
+        color: #0073e6;
+    }
+</style>
+
+<div class="container response-container">
+    <h3>Your response has been recorded</h3>
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'login:user_dashboard' %}" class="btn btn-primary">Back to Dashboard</a></p>
+    {% else %}
+        <p><a href="{% url 'login:index' %}" class="btn btn-primary">Home</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Report Details{% endblock %}
+{% block content %}
+
+<div class="container">
+  <h1 class="mb-4">Report Details</h1>
+  {% if report.reporter %}
+    <p>Reported by: {{ report.reporter.get_full_name }}</p>
+    <p>Email: {{ report.reporter.email }}</p>
+  {% else %}
+    <p>Reported by: Anonymous</p>
+  {% endif %}
+
+  <p>Date reported: {{ report.published_date }}</p>
+  <p>Person reported: {{ report.name_reported }}</p>
+  <p>Description: {{ report.description }}</p>
+
+  <h3 class="mt-4">Attached Files:</h3>
+  {% for file in report_files %}
+    <p><a href="{{ file.file.url }}">{{ file.file.name }}</a></p>
+  {% empty %}
+    <p>No files attached.</p>
+  {% endfor %}
+
+  <br>
+  <p>Status: {{ report.status }}</p>
+
+  {% if is_site_admin %}
+    <!-- page for site admin -->
+    <form action="{% url 'login:resolve_report' report.id %}" method="post" class="mt-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Resolve Report</button>
+    </form>
+    <p><a href="{% url 'login:admin_dashboard' %}" class="btn btn-secondary mt-2">Back to Dashboard</a></p>
+  {% else %}
+    <!-- page for common user -->
+    {% if report.status == 'Resolved' %}
+      <p>Resolution Details: {{ report.resolved_notes }}</p>
+    {% endif %}
+    <form action="{% url 'login:delete_report' report.id %}" method="post" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Delete Report</button>
+    </form>
+    <br>
+    <p><a href="{% url 'login:user_dashboard' %}" class="btn btn-secondary mt-2">Back to Dashboard</a></p>
+  {% endif %}
+</div>
+
+{% endblock %}
